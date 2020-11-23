@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import Pages from './pages';
+import { ErrorBoundary } from './ErrorBoundry';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [user, setUser] = useState(null);
+  
+  useEffect(() => {
+    fetch('https://gitconnected.com/v1/portfolio/apurv278')
+      .then(res => res.json())
+      .then(user => {
+         setUser(user); 
+    });
+  }, []);
+
+  if(!user){
+    return <div />;
+  }
+
+  return <ErrorBoundary> <Pages user = {user} /> </ErrorBoundary>;
 }
 
 export default App;
